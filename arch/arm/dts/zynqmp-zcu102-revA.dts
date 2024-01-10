@@ -1,4 +1,4 @@
-/*
+/*modified
  * dts file for Xilinx ZynqMP ZCU102 RevA
  *
  * (C) Copyright 2015, Xilinx, Inc.
@@ -34,8 +34,10 @@
 		spi0 = &qspi;
 		usb0 = &usb0;
 	};
+
+
 	chosen {
-		bootargs = "earlycon";
+		bootargs = " earlycon console=ttyPS0,115200 clk_ignore_unused root=/dev/mmcblk1p1 rw rootwait";
 		stdout-path = "serial0:115200n8";
 	};
 
@@ -44,6 +46,19 @@
 		reg = <0x0 0x0 0x0 0x80000000>, <0x8 0x00000000 0x0 0x80000000>;
 	};
 
+	gpio-keys {
+		compatible = "gpio-keys";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		autorepeat;
+		sw19 {
+			label = "sw19";
+			gpios = <&gpio 22 GPIO_ACTIVE_HIGH>;
+			linux,code = <108>; /* down */
+			gpio-key,wakeup;
+			autorepeat;
+		};
+	};
 
 	leds {
 		compatible = "gpio-leds";
@@ -56,58 +71,10 @@
 };
 
 
-&dcc {
-	status = "okay";
-};
-
-/* fpd_dma clk 667MHz, lpd_dma 500MHz */
-&fpd_dma_chan1 {
-	status = "okay";
-	xlnx,include-sg; /* for testing purpose */
-	xlnx,overfetch; /* for testing purpose */
-	xlnx,ratectrl = <0>; /* for testing purpose */
-	xlnx,src-issue = <31>;
-};
-
-&fpd_dma_chan2 {
-	status = "okay";
-	xlnx,ratectrl = <100>; /* for testing purpose */
-	xlnx,src-issue = <4>; /* for testing purpose */
-};
-
-&fpd_dma_chan3 {
-	status = "okay";
-};
-
-&fpd_dma_chan4 {
-	status = "okay";
-	xlnx,include-sg; /* for testing purpose */
-};
-
-&fpd_dma_chan5 {
-	status = "okay";
-};
-
-&fpd_dma_chan6 {
-	status = "okay";
-	xlnx,include-sg; /* for testing purpose */
-};
-
-&fpd_dma_chan7 {
-	status = "okay";
-};
-
-&fpd_dma_chan8 {
-	status = "okay";
-	xlnx,include-sg; /* for testing purpose */
-};
-
 &gem3 {
 	status = "okay";
 	phy-handle = <&phy0>;
 	phy-mode = "rgmii-id";
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_gem3_default>;
 	phy0: phy@21 {
 		reg = <21>;
 		ti,rx-internal-delay = <0x8>;
@@ -115,149 +82,6 @@
 		ti,fifo-depth = <0x1>;
 		ti,rxctrl-strap-worka;
 	};
-};
-
-
-&gpu {
-	status = "okay";
-};
-
-
-
-
-&pinctrl0 {
-	status = "okay";
-
-
-	pinctrl_uart0_default: uart0-default {
-		mux {
-			groups = "uart0_4_grp";
-			function = "uart0";
-		};
-
-		conf {
-			groups = "uart0_4_grp";
-			slew-rate = <SLEW_RATE_SLOW>;
-			io-standard = <IO_STANDARD_LVCMOS18>;
-		};
-
-		conf-rx {
-			pins = "MIO18";
-			bias-high-impedance;
-		};
-
-		conf-tx {
-			pins = "MIO19";
-			bias-disable;
-		};
-	};
-
-	pinctrl_uart1_default: uart1-default {
-		mux {
-			groups = "uart1_5_grp";
-			function = "uart1";
-		};
-
-		conf {
-			groups = "uart1_5_grp";
-			slew-rate = <SLEW_RATE_SLOW>;
-			io-standard = <IO_STANDARD_LVCMOS18>;
-		};
-
-		conf-rx {
-			pins = "MIO21";
-			bias-high-impedance;
-		};
-
-		conf-tx {
-			pins = "MIO20";
-			bias-disable;
-		};
-	};
-
-	
-	pinctrl_gem3_default: gem3-default {
-		mux {
-			function = "ethernet3";
-			groups = "ethernet3_0_grp";
-		};
-
-		conf {
-			groups = "ethernet3_0_grp";
-			slew-rate = <SLEW_RATE_SLOW>;
-			io-standard = <IO_STANDARD_LVCMOS18>;
-		};
-
-		conf-rx {
-			pins = "MIO70", "MIO71", "MIO72", "MIO73", "MIO74",
-									"MIO75";
-			bias-high-impedance;
-			low-power-disable;
-		};
-
-		conf-tx {
-			pins = "MIO64", "MIO65", "MIO66", "MIO67", "MIO68",
-									"MIO69";
-			bias-disable;
-			low-power-enable;
-		};
-
-		mux-mdio {
-			function = "mdio3";
-			groups = "mdio3_0_grp";
-		};
-
-		conf-mdio {
-			groups = "mdio3_0_grp";
-			slew-rate = <SLEW_RATE_SLOW>;
-			io-standard = <IO_STANDARD_LVCMOS18>;
-			bias-disable;
-		};
-	};
-
-
-
-	pinctrl_sdhci1_default: sdhci1-default {
-		mux {
-			groups = "sdio1_0_grp";
-			function = "sdio1";
-		};
-
-		conf {
-			groups = "sdio1_0_grp";
-			slew-rate = <SLEW_RATE_SLOW>;
-			io-standard = <IO_STANDARD_LVCMOS18>;
-			bias-disable;
-		};
-
-		mux-cd {
-			groups = "sdio1_0_cd_grp";
-			function = "sdio1_cd";
-		};
-
-		conf-cd {
-			groups = "sdio1_0_cd_grp";
-			bias-high-impedance;
-			bias-pull-up;
-			slew-rate = <SLEW_RATE_SLOW>;
-			io-standard = <IO_STANDARD_LVCMOS18>;
-		};
-
-		mux-wp {
-			groups = "sdio1_0_wp_grp";
-			function = "sdio1_wp";
-		};
-
-		conf-wp {
-			groups = "sdio1_0_wp_grp";
-			bias-high-impedance;
-			bias-pull-up;
-			slew-rate = <SLEW_RATE_SLOW>;
-			io-standard = <IO_STANDARD_LVCMOS18>;
-		};
-	};
-
-	
 };
 
 
@@ -276,78 +100,17 @@
         disable-wp;
         no-1-8-v;
 };
-&serdes {
-	status = "okay";
-};
-
 &uart0 {
 	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_uart0_default>;
+
 };
 
 &uart1 {
 	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_uart1_default>;
+
+};
+&usb0 {
+	status = "disabled";
+
 };
 
-
-
-&dwc3_0 {
-	status = "okay";
-	dr_mode = "host";
-	snps,usb3_lpm_capable;
-	phy-names = "usb3-phy";
-	phys = <&lane2 PHY_TYPE_USB3 0 2 26000000>;
-	maximum-speed = "super-speed";
-};
-
-
-
-&xilinx_ams {
-	status = "okay";
-};
-
-&ams_ps {
-	status = "okay";
-};
-
-&ams_pl {
-	status = "okay";
-};
-
-&xilinx_drm {
-	status = "okay";
-};
-
-&xlnx_dp {
-	status = "okay";
-	phy-names = "dp-phy0";
-	phys = <&lane1 PHY_TYPE_DP 0 3 27000000>;
-	xlnx,max-lanes = <1>;
-};
-
-&xlnx_dp_sub {
-	status = "okay";
-};
-
-&xlnx_dp_snd_pcm0 {
-	status = "okay";
-};
-
-&xlnx_dp_snd_pcm1 {
-	status = "okay";
-};
-
-&xlnx_dp_snd_card {
-	status = "okay";
-};
-
-&xlnx_dp_snd_codec0 {
-	status = "okay";
-};
-
-&xlnx_dpdma {
-	status = "okay";
-};
