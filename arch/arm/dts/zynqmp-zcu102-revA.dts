@@ -254,12 +254,7 @@
 
 
 /* SD1 with level shifter */
-&sdhci1 {
-	status = "okay";
-        disable-wp;
-        xlinx,mio_bank = <0x1>;
-        no-1-8-v;
-};
+
 &sdhci1 {
 	status = "okay";
 	pinctrl-names = "default";
