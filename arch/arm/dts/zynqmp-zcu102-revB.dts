@@ -15,17 +15,6 @@
 	compatible = "xlnx,zynqmp-zcu102-revB", "xlnx,zynqmp-zcu102", "xlnx,zynqmp";
 };
 
-&gem3 {
-	phy-handle = <&phyc>;
-	phyc: phy@c {
-		reg = <0xc>;
-		ti,rx-internal-delay = <0x8>;
-		ti,tx-internal-delay = <0xa>;
-		ti,fifo-depth = <0x1>;
-		ti,rxctrl-strap-worka;
-	};
-	/* Cleanup from RevA */
-	/delete-node/ phy@21;
-};
+
 
 

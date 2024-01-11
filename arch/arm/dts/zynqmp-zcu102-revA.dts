@@ -26,7 +26,7 @@
 		i2c0 = &i2c0;
 		i2c1 = &i2c1;
 		mmc1 = &sdhci1;
-                mmc0 = &sdhci0;
+        mmc0 = &sdhci0;
 		rtc0 = &rtc;
 		serial0 = &uart0;
 		serial1 = &uart1;
@@ -103,18 +103,7 @@
 };
 
 &gem3 {
-	status = "okay";
-	phy-handle = <&phy0>;
-	phy-mode = "rgmii-id";
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_gem3_default>;
-	phy0: phy@21 {
-		reg = <21>;
-		ti,rx-internal-delay = <0x8>;
-		ti,tx-internal-delay = <0xa>;
-		ti,fifo-depth = <0x1>;
-		ti,rxctrl-strap-worka;
-	};
+	local-mac-address = [00 0a 35 00 22 01];
 };
 
 
@@ -272,7 +261,7 @@
 };
 
 &sdhci0 {
-	status = "okay";
+	status = "disabled";
         disable-wp;
         no-1-8-v;
 };
