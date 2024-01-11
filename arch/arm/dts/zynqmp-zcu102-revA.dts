@@ -260,7 +260,13 @@
         xlinx,mio_bank = <0x1>;
         no-1-8-v;
 };
-
+&sdhci1 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_sdhci1_default>;
+	no-1-8-v;
+	xlnx,mio_bank = <1>;
+};
 &sdhci0 {
 	status = "disabled";
         disable-wp;
