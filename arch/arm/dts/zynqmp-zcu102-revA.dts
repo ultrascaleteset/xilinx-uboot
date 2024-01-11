@@ -262,7 +262,7 @@
 };
 
 &sdhci0 {
-	status = "okay";
+	status = "disabled";
         disable-wp;
         xlinx,mio_bank = <0x0>;
         no-1-8-v;
