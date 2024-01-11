@@ -26,7 +26,7 @@
 		i2c0 = &i2c0;
 		i2c1 = &i2c1;
 		mmc1 = &sdhci1;
-        mmc0 = &sdhci0;
+                mmc0 = &sdhci0;
 		rtc0 = &rtc;
 		serial0 = &uart0;
 		serial1 = &uart1;
@@ -257,12 +257,14 @@
 &sdhci1 {
 	status = "okay";
         disable-wp;
+        xlinx,mio_bank = <0x1>;
         no-1-8-v;
 };
 
 &sdhci0 {
 	status = "okay";
         disable-wp;
+        xlinx,mio_bank = <0x0>;
         no-1-8-v;
 };
 &serdes {
